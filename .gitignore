@@ -1,0 +1,9 @@
+.env
+.vscode
+*__pycache__
+.pytest_cache
+tests/cassettes
+.coverage
+*.DS_Store
+config*
+tap_gmail.egg-info
