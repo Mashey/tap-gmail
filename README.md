@@ -4,6 +4,34 @@ The first version of this application will retrieve Gmail data from a Google Wor
 
 The `Reports API` is part of the `Admin SDK`.
 
+## Endpoints :: Reports API :: Gmail
+
+|Gmail query param|
+
+### Daily Active Email Senders
+
+|Gmail query param|
+
+### Daily Emails Sent
+
+|Gmail query param|
+
+### Daily Emails Received
+
+|Gmail query param|
+
+### Weekly Active Mail Senders
+
+|Gmail query param|
+
+### Weekly Emails Sent
+
+|Gmail query param|
+
+### Weekly Emails Received
+
+|Gmail query param|
+
 ## Helpful Documentation
 
 Links to helpful documentation for this project
