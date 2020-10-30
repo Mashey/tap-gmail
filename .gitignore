@@ -7,3 +7,4 @@ tests/cassettes
 *.DS_Store
 config*
 tap_gmail.egg-info
+google_admin_reports.json
