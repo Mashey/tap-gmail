@@ -8,7 +8,7 @@ jobs:
     executor: python/default
     steps:
       - checkout
-      - python/install-packages
+      - python/install-packages:
           pkg-manager: poetry
       - run:
           command: |
