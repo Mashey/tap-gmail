@@ -1,33 +1,20 @@
 version: 2.1
 
+orbs:
+  python: circleci/python@1.2.1
+
 jobs:
   build-and-test:
-    docker:
-      - image: circleci/python:3.8.3
-
+    executor: python/default
     steps:
       - checkout
-      
-      - restore_cache:
-          keys:
-            - deps-{{ checksum "poetry.lock" }}
-      
+      - python/install-packages
+          pkg-manager: poetry
       - run:
-          name: Install Dependencies
           command: |
-            poetry install
-            
-      - save_cache:
-          key: deps-{{ checksum "poetry.lock" }}
-          paths:
-            - home/circleci/.cache/pypoetry/virtualenvs
+            poetry run pytest --version
+          name: Test
 
-
-      - run:
-          name: Run Tests
-          command: |
-            poetry run pytest
-            
 workflows:
   main:
     jobs:
