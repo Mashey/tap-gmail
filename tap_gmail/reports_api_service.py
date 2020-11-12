@@ -16,7 +16,9 @@ service = build(
 )
 
 results = service.userUsageReport().get(
-    userKey='all', date='2020-11-01', parameters='gmail:timestamp_last_interaction',
+    userKey='all',
+    date='2020-11-01',
+    parameters='gmail:timestamp_last_interaction',
     maxResults=50
 ).execute()
 
