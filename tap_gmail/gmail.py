@@ -20,10 +20,10 @@ current_datetime = date.today()
 # The code below is for testing with Pytest.
 load_dotenv()
 API_KEY = json.loads(os.getenv('gitlab'))['key']
-TOKEN = json.loads(os.getenv('gitlab'))['token']
+# TOKEN = json.loads(os.getenv('gitlab'))['token']
 
 headers = {
-    'Authorization': TOKEN,
+    # 'Authorization': TOKEN,
     'Accept': 'application/json'
 }
 
