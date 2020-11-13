@@ -7,7 +7,7 @@ import pandas as pd
 import pprint
 import singer
 from datetime import date, datetime, timezone
-
+import reports_api_service
 
 pp = pprint.PrettyPrinter(indent=4, depth=3)
 current_datetime = date.today()
@@ -37,32 +37,6 @@ client = requests.Session()
 # weekly emails sent from gitlab.com
 # weekly emails received to gitlab.com
 
-# Example
-# GET https: // www.googleapis.com/admin/reports/v1/usage/users/[USERKEY]/dates/[DATE]?key = [YOUR_API_KEY] HTTP/1.1
-
-# Authorization: Bearer[YOUR_ACCESS_TOKEN]
-# Accept: application/json
-
-# Gmail Parameters
-# num_emails_exchanged
-#  - integer
-#  - The total number of emails exchanged. This is the total of num_emails_sent plus num_emails_received.
-
-# num_emails_received
-#  - integer
-#  - The number of emails received by the user.
-
-# num_emails_sent
-#  - integer
-#  - The number of emails sent by the user.
-
-# timestamp_last_access
-#  - integer
-#  - Last access timestamp
-
-# timestamp_last_interaction
-#  - integer
-#  - Last interactive access timestamp
 
 
 def fetch_reports_gmail(user="all", date_param=current_datetime):
