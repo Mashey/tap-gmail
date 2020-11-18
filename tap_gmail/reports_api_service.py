@@ -22,6 +22,7 @@ def create_service():
 
 service = create_service()
 
+
 def find_previous_week():
     previous_week = date.today() - timedelta(days=9)
 
@@ -36,6 +37,7 @@ def find_latest_data():
 previous_week = find_previous_week()
 latest_data = find_latest_data()
 
+
 def create_week(start_date):
     week = []
     week.append(start_date)
@@ -45,7 +47,7 @@ def create_week(start_date):
         new_date = date.fromisoformat(current_date) + timedelta(days=1)
         week.append(new_date.isoformat())
         current_date = new_date.isoformat()
-    
+
     return week
 
 
@@ -56,7 +58,7 @@ def get_emails(selected_date, page_token, sent_or_recieved):
         request_type = 'gmail:num_emails_sent'
     elif sent_or_recieved == 'recieved':
         request_type = 'gmail:num_emails_recieved'
-        
+
     emails = service.userUsageReport().get(
         userKey='all',
         date=selected_date,
@@ -71,8 +73,9 @@ def get_emails(selected_date, page_token, sent_or_recieved):
 
 total_weekly_active_users = defaultdict(list)
 
-def process_week(date, page_token, sent_or_recieved):
-    weekly_active_senders = get_emails(date, page_token, sent_or_recieved)
+
+def process_sent(date, page_token):
+    weekly_active_senders = get_emails(date, page_token, 'sent')
 
     try:
         for sender in weekly_active_senders['usageReports']:
@@ -83,7 +86,27 @@ def process_week(date, page_token, sent_or_recieved):
         return 'Only partial or no data available. Please try an earlier date.'
 
     if 'nextPageToken' in weekly_active_senders:
-        process_week(date, weekly_active_senders['nextPageToken'], sent_or_recieved)
+        process_sent(
+            date, weekly_active_senders['nextPageToken'])
+
+
+total_weekly_emails_recieved = defaultdict(list)
+
+
+def process_recieved(date, page_token):
+    weekly_emails_recieved = get_emails(date, page_token, 'recieved')
+
+    try:
+        for sender in weekly_emails_recieved['usageReports']:
+            total_weekly_emails_recieved[sender['date']].append(
+                {sender['entity']['userEmail']: sender['parameters'][0]['intValue']}
+            )
+    except KeyError:
+        return 'Only partial or no data available. Please try an earlier date.'
+
+    if 'nextPageToken' in weekly_emails_recieved:
+        process_recieved(
+            date, weekly_emails_recieved['nextPageToken'])
 
 
 def unqiue_users(data):
@@ -103,22 +126,30 @@ def find_weekly_active_users(selected_date=previous_week, page_token=None):
     week = create_week(selected_date)
 
     for date in week:
-        process_week(date, page_token, 'sent')
+        process_sent(date, page_token)
 
     total = unqiue_users(total_weekly_active_users)
     return total
 
 
-def find_weekly_emails_sent():
-    weekly_emails_sent = service.userUsageReport().get(
-        userKey='all',
-        date=today,
-        parameters='gmail:num_emails_sent',
-        filters=f'gmail:num_emails_sent>{previous_week}',
-        maxResults=10
-    ).execute()
+def count_emails(data):
+    total_emails = 0
 
-    return len(weekly_emails_sent['usageReports'])
+    for date in data:
+        users = list(data[date])
+        for user in users:
+            emails = list(user.values())[0]
+            emails_int = int(emails)
+            total_emails += emails_int
+
+    return total_emails
+
+
+def find_weekly_emails_sent(selected_date=previous_week, page_token=None):
+    week = create_week(selected_date)
+
+    total = count_emails(total_weekly_active_users)
+    return total
 
 
 def find_weekly_emails_recieved():
@@ -135,19 +166,22 @@ def find_weekly_emails_recieved():
 
 total_daily_senders = defaultdict(list)
 
+
 def find_daily_active_senders(selected_date=latest_data, page_token=None):
     daily_active_senders = get_emails(selected_date, page_token, 'sent')
 
     try:
         for sender in daily_active_senders['usageReports']:
             total_daily_senders[sender['date']].append(
-                {sender['entity']['userEmail']: sender['parameters'][0]['intValue']}
+                {sender['entity']['userEmail']
+                    : sender['parameters'][0]['intValue']}
             )
     except KeyError:
         return 'Only partial or no data available. Please try an earlier date.'
 
     if 'nextPageToken' in daily_active_senders:
-        find_daily_active_senders(selected_date, daily_active_senders['nextPageToken'])
+        find_daily_active_senders(
+            selected_date, daily_active_senders['nextPageToken'])
 
     return len(total_daily_senders[selected_date])
 
@@ -162,6 +196,7 @@ def find_daily_emails_sent():
 
     return len(daily_emails_sent['usageReports'])
 
+
 def find_daily_emails_recieved():
     daily_emails_recieved = service.userUsageReport().get(
         userKey='all',
@@ -174,5 +209,6 @@ def find_daily_emails_recieved():
 
 
 find_weekly_active_users()
+find_weekly_emails_sent()
 
 break_point = 'Testing break point'
