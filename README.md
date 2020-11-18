@@ -4,6 +4,12 @@ The first version of this application will retrieve Gmail data from a Google Wor
 
 The `Reports API` is part of the `Admin SDK`.
 
+## Setup
+
+The Google API Python Client documentation provides a guide for completing all necessary steps to ensure the application and environment are configured correclty. The guide can be found here:
+
+[Using OAuth 2.0 for Server to Server Applications](https://github.com/googleapis/google-api-python-client/blob/master/docs/oauth-server.md)
+
 ## Endpoints :: Reports API :: Gmail
 
 |Gmail query param|
