@@ -21,7 +21,6 @@ def create_service():
 
 
 service = create_service()
-today = date.today().isoformat()
 
 def find_previous_week():
     previous_week = date.today() - timedelta(days=9)
@@ -34,14 +33,8 @@ def find_latest_data():
     return two_days_ago.isoformat()
 
 
-def find_next_day(selected_date=None):
-    if selected_date == None:
-        next_day = date.today() + timedelta(days=1)
-        return next_day.isoformat()
-    else:
-        user_next_day = date.fromisoformat(selected_date) + timedelta(days=1)
-        return user_next_day.isoformat()
-
+previous_week = find_previous_week()
+latest_data = find_latest_data()
 
 def create_week(start_date):
     week = []
@@ -55,8 +48,6 @@ def create_week(start_date):
     
     return week
 
-previous_week = find_previous_week()
-latest_data = find_latest_data()
 
 def get_emails_sent(selected_date, page_token):
     emails_sent = service.userUsageReport().get(
@@ -71,14 +62,14 @@ def get_emails_sent(selected_date, page_token):
     return emails_sent
 
 
-total_weekly_senders = defaultdict(list)
+total_weekly_active_users = defaultdict(list)
 
 def process_week(date, page_token):
     weekly_active_senders = get_emails_sent(date, page_token)
 
     try:
         for sender in weekly_active_senders['usageReports']:
-            total_weekly_senders[sender['date']].append(
+            total_weekly_active_users[sender['date']].append(
                 {sender['entity']['userEmail']: sender['parameters'][0]['intValue']}
             )
     except KeyError:
@@ -86,17 +77,29 @@ def process_week(date, page_token):
 
     if 'nextPageToken' in weekly_active_senders:
         process_week(date, weekly_active_senders['nextPageToken'])
-    
-    return weekly_active_senders
 
 
-def find_weekly_active_senders(selected_date=previous_week, page_token=None):
+def unqiue_users(data):
+    user_list = []
+
+    for date in data:
+        users = list(data[date])
+        for user in users:
+            user = list(user.keys())[0]
+            user_list.append(user)
+
+    user_set = set(user_list)
+    return len(user_set)
+
+
+def find_weekly_active_users(selected_date=previous_week, page_token=None):
     week = create_week(selected_date)
 
     for date in week:
         process_week(date, page_token)
 
-    return len(total_weekly_senders[selected_date])
+    total = unqiue_users(total_weekly_active_users)
+    return total
 
 
 def find_weekly_emails_sent():
@@ -163,6 +166,6 @@ def find_daily_emails_recieved():
     return len(daily_emails_recieved['usageReports'])
 
 
-find_weekly_active_senders()
+find_weekly_active_users()
 
 break_point = 'Testing break point'
