@@ -152,16 +152,14 @@ def find_weekly_emails_sent(selected_date=previous_week, page_token=None):
     return total
 
 
-def find_weekly_emails_recieved():
-    weekly_emails_recieved = service.userUsageReport().get(
-        userKey='all',
-        date=today,
-        parameters='gmail:num_emails_recieved',
-        filters=f'gmail:num_emails_recieved>{previous_week}',
-        maxResults=10
-    ).execute()
+def find_weekly_emails_recieved(selected_date=previous_week, page_token=None):
+    week = create_week(selected_date)
 
-    return len(weekly_emails_recieved['usageReports'])
+    for date in week:
+        process_recieved(date, page_token)
+
+    total = count_emails(total_weekly_emails_recieved)
+    return total
 
 
 total_daily_senders = defaultdict(list)
