@@ -5,6 +5,7 @@
 tests/cassettes
 .coverage
 *.DS_Store
-config*
+config_tap_gitlab.json
 tap_gmail.egg-info
 google_admin_reports.json
+service_key.json
