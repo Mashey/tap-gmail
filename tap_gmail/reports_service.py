@@ -15,7 +15,12 @@ credentials = service_account.Credentials.from_service_account_file(
 
 
 def create_service():
-    return build('admin', 'reports_v1', credentials=credentials)
+    return build(
+        'admin',
+        'reports_v1',
+        credentials=credentials,
+        cache_discovery=False
+    )
 
 
 service = create_service()
