@@ -2,9 +2,6 @@ import requests
 import json
 from collections import defaultdict
 from datetime import date, datetime, timezone, timedelta
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
-from google.auth.transport.requests import AuthorizedSession
 from tap_gmail.reports_service import *
 
 
