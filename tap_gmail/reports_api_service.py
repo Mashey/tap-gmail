@@ -109,7 +109,7 @@ def process_recieved(date, page_token):
             date, weekly_emails_recieved['nextPageToken'])
 
 
-def unqiue_users(data):
+def total_unique_users(data):
     user_list = []
 
     for date in data:
@@ -122,17 +122,31 @@ def unqiue_users(data):
     return len(user_set)
 
 
+def create_json_response(set_start_date, set_end_date, set_total):
+    response = {
+        'start_date': set_start_date,
+        'end_date': set_end_date,
+        'total': set_total
+    }
+
+    return response
+
+
 def find_weekly_active_users(selected_date=previous_week, page_token=None):
     week = create_week(selected_date)
+    start_date = week[0]
+    end_date = week[-1]
 
     for date in week:
         process_sent(date, page_token)
 
-    total = unqiue_users(total_weekly_active_users)
-    return total
+    total = total_unique_users(total_weekly_active_users)
+    json_response = create_json_response(start_date, end_date, total)
+
+    return json_response
 
 
-def count_emails(data):
+def total_emails_count(data):
     total_emails = 0
 
     for date in data:
@@ -147,19 +161,27 @@ def count_emails(data):
 
 def find_weekly_emails_sent(selected_date=previous_week, page_token=None):
     week = create_week(selected_date)
+    start_date = week[0]
+    end_date = week[-1]
 
-    total = count_emails(total_weekly_active_users)
-    return total
+    total = total_emails_count(total_weekly_active_users)
+    json_response = create_json_response(start_date, end_date, total)
+
+    return json_response
 
 
 def find_weekly_emails_recieved(selected_date=previous_week, page_token=None):
     week = create_week(selected_date)
+    start_date = week[0]
+    end_date = week[-1]
 
     for date in week:
         process_recieved(date, page_token)
 
-    total = count_emails(total_weekly_emails_recieved)
-    return total
+    total = total_emails_count(total_weekly_emails_recieved)
+    json_response = create_json_response(start_date, end_date, total)
+    
+    return json_response
 
 
 total_daily_senders = defaultdict(list)
@@ -208,5 +230,6 @@ def find_daily_emails_recieved():
 
 find_weekly_active_users()
 find_weekly_emails_sent()
+find_weekly_emails_recieved()
 
 break_point = 'Testing break point'
