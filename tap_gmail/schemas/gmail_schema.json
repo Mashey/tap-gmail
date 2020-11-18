@@ -3,6 +3,7 @@
   "additionalProperties": false,
   "properties": {
     "timestamp": { "type": ["null", "string"] },
+    "query_type": { "type": ["null", "string"] },
     "start_date": { "type": ["null", "string"] },
     "end_date": { "type": ["null", "string"] },
     "total": { "type": ["null", "integer"] }

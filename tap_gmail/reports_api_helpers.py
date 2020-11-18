@@ -104,11 +104,12 @@ def total_unique_users(data):
     return len(user_set)
 
 
-def create_json_response(set_start_date, set_end_date, set_total):
+def create_json_response(set_start_date, set_end_date, set_total, set_query):
     now = create_timestamp()
 
     response = {
         'timestamp': now,
+        'query_type': set_query,
         'start_date': set_start_date,
         'end_date': set_end_date,
         'total': set_total

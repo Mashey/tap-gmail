@@ -28,7 +28,7 @@ def find_weekly_active_users(selected_date=previous_week, page_token=None):
         process_sent(date, page_token)
 
     total = total_unique_users(total_weekly_active_users)
-    json_response = create_json_response(start_date, end_date, total)
+    json_response = create_json_response(start_date, end_date, total, 'weekly active users')
 
     # singer.write_schema('gmail', gmail_schema, 'timestamp')
     # singer.write_records('gmail', json_response)
@@ -42,7 +42,7 @@ def find_weekly_emails_sent(selected_date=previous_week, page_token=None):
     end_date = week[-1]
 
     total = total_emails_count(total_weekly_active_users)
-    json_response = create_json_response(start_date, end_date, total)
+    json_response = create_json_response(start_date, end_date, total, 'weekly emails sent')
 
     # singer.write_schema('gmail', gmail_schema, 'timestamp')
     # singer.write_records('gmail', json_response)
@@ -50,7 +50,7 @@ def find_weekly_emails_sent(selected_date=previous_week, page_token=None):
     return json_response
 
 
-def find_weekly_emails_recieved(selected_date=previous_week, page_token=None):
+def find_weekly_emails_received(selected_date=previous_week, page_token=None):
     week = create_week(selected_date)
     start_date = week[0]
     end_date = week[-1]
@@ -59,7 +59,7 @@ def find_weekly_emails_recieved(selected_date=previous_week, page_token=None):
         process_received(date, page_token)
 
     total = total_emails_count(total_weekly_emails_received)
-    json_response = create_json_response(start_date, end_date, total)
+    json_response = create_json_response(start_date, end_date, total, 'weekly emails received')
 
     # singer.write_schema('gmail', gmail_schema, 'timestamp')
     # singer.write_records('gmail', json_response)
@@ -85,7 +85,7 @@ def find_daily_active_users(selected_date=latest_data, page_token=None):
             selected_date, daily_active_senders['nextPageToken'])
 
     total = len(total_daily_senders[selected_date])
-    json_response = create_json_response(start_date, end_date, total)
+    json_response = create_json_response(start_date, end_date, total, 'daily active users')
 
     # singer.write_schema('gmail', gmail_schema, 'timestamp')
     # singer.write_records('gmail', json_response)
@@ -99,7 +99,7 @@ def find_daily_emails_sent(selected_date=latest_data, page_token=None):
     end_date = selected_date
 
     total = total_emails_count(total_daily_senders)
-    json_response = create_json_response(start_date, end_date, total)
+    json_response = create_json_response(start_date, end_date, total, 'daily emails sent')
 
     # singer.write_schema('gmail', gmail_schema, 'timestamp')
     # singer.write_records('gmail', json_response)
@@ -125,7 +125,7 @@ def find_daily_emails_received(selected_date=latest_data, page_token=None):
             selected_date, daily_emails_received['nextPageToken'])
 
     total = total_emails_count(total_daily_emails_received)
-    json_response = create_json_response(start_date, end_date, total)
+    json_response = create_json_response(start_date, end_date, total, 'daily emails received')
 
     # singer.write_schema('gmail', gmail_schema, 'timestamp')
     # singer.write_records('gmail', json_response)
@@ -135,7 +135,7 @@ def find_daily_emails_received(selected_date=latest_data, page_token=None):
 
 find_weekly_active_users()
 find_weekly_emails_sent()
-find_weekly_emails_recieved()
+find_weekly_emails_received()
 find_daily_active_users()
 find_daily_emails_sent()
 find_daily_emails_received()
