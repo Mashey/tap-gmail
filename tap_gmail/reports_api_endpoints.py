@@ -95,8 +95,8 @@ def find_daily_active_users(selected_date=latest_data, page_token=None):
 
 def find_daily_emails_sent(selected_date=latest_data, page_token=None):
     week = create_week(selected_date)
-    start_date = week[0]
-    end_date = week[-1]
+    start_date = selected_date
+    end_date = selected_date
 
     total = total_emails_count(total_daily_senders)
     json_response = create_json_response(start_date, end_date, total)
