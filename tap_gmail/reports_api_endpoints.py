@@ -134,8 +134,8 @@ def find_daily_emails_received(selected_date=latest_data, page_token=None):
 
 
 find_weekly_active_users()
-# find_weekly_emails_sent()
-# find_weekly_emails_recieved()
-# find_daily_active_users()
-# find_daily_emails_sent()
-# find_daily_emails_received()
+find_weekly_emails_sent()
+find_weekly_emails_recieved()
+find_daily_active_users()
+find_daily_emails_sent()
+find_daily_emails_received()
