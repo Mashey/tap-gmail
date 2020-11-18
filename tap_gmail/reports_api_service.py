@@ -1,3 +1,9 @@
+import requests
+import json
+from dotenv import load_dotenv
+import os
+import pprint
+import singer
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from google.auth.transport.requests import AuthorizedSession
@@ -16,11 +22,19 @@ credentials = service_account.Credentials.from_service_account_file(
     SERVICE_ACCOUNT_FILE, scopes=SCOPES, subject="jordan@mashey.com")
 
 
+with open('./tap_gmail/schemas/gmail_schema.json') as json_file:
+    gmail_schema = json.load(json_file)
+
+
 def create_service():
     return build('admin', 'reports_v1', credentials=credentials)
 
 
 service = create_service()
+
+
+def create_timestamp():
+    return datetime.now(timezone.utc).isoformat()
 
 
 def find_previous_week():
@@ -123,27 +137,16 @@ def total_unique_users(data):
 
 
 def create_json_response(set_start_date, set_end_date, set_total):
+    now = create_timestamp()
+
     response = {
+        'timestamp': now,
         'start_date': set_start_date,
         'end_date': set_end_date,
         'total': set_total
     }
 
     return response
-
-
-def find_weekly_active_users(selected_date=previous_week, page_token=None):
-    week = create_week(selected_date)
-    start_date = week[0]
-    end_date = week[-1]
-
-    for date in week:
-        process_sent(date, page_token)
-
-    total = total_unique_users(total_weekly_active_users)
-    json_response = create_json_response(start_date, end_date, total)
-
-    return json_response
 
 
 def total_emails_count(data):
@@ -159,6 +162,23 @@ def total_emails_count(data):
     return total_emails
 
 
+def find_weekly_active_users(selected_date=previous_week, page_token=None):
+    week = create_week(selected_date)
+    start_date = week[0]
+    end_date = week[-1]
+
+    for date in week:
+        process_sent(date, page_token)
+
+    total = total_unique_users(total_weekly_active_users)
+    json_response = create_json_response(start_date, end_date, total)
+
+    # singer.write_schema('gmail', gmail_schema, 'timestamp')
+    # singer.write_records('gmail', json_response)
+
+    return json_response
+
+
 def find_weekly_emails_sent(selected_date=previous_week, page_token=None):
     week = create_week(selected_date)
     start_date = week[0]
@@ -166,6 +186,9 @@ def find_weekly_emails_sent(selected_date=previous_week, page_token=None):
 
     total = total_emails_count(total_weekly_active_users)
     json_response = create_json_response(start_date, end_date, total)
+
+    # singer.write_schema('gmail', gmail_schema, 'timestamp')
+    # singer.write_records('gmail', json_response)
 
     return json_response
 
@@ -180,6 +203,9 @@ def find_weekly_emails_recieved(selected_date=previous_week, page_token=None):
 
     total = total_emails_count(total_weekly_emails_received)
     json_response = create_json_response(start_date, end_date, total)
+
+    # singer.write_schema('gmail', gmail_schema, 'timestamp')
+    # singer.write_records('gmail', json_response)
 
     return json_response
 
@@ -208,6 +234,9 @@ def find_daily_active_users(selected_date=latest_data, page_token=None):
     total = len(total_daily_senders[selected_date])
     json_response = create_json_response(start_date, end_date, total)
 
+    # singer.write_schema('gmail', gmail_schema, 'timestamp')
+    # singer.write_records('gmail', json_response)
+
     return json_response
 
 
@@ -218,6 +247,9 @@ def find_daily_emails_sent(selected_date=latest_data, page_token=None):
 
     total = total_emails_count(total_daily_senders)
     json_response = create_json_response(start_date, end_date, total)
+
+    # singer.write_schema('gmail', gmail_schema, 'timestamp')
+    # singer.write_records('gmail', json_response)
 
     return json_response
 
@@ -246,6 +278,9 @@ def find_daily_emails_received(selected_date=latest_data, page_token=None):
     total = total_emails_count(total_daily_emails_received)
     json_response = create_json_response(start_date, end_date, total)
 
+    # singer.write_schema('gmail', gmail_schema, 'timestamp')
+    # singer.write_records('gmail', json_response)
+
     return json_response
 
 
@@ -255,5 +290,3 @@ find_weekly_emails_recieved()
 find_daily_active_users()
 find_daily_emails_sent()
 find_daily_emails_received()
-
-break_point = 'Testing break point'
