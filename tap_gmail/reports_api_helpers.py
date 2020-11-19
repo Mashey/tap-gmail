@@ -114,8 +114,7 @@ def create_json_response(set_start_date, set_end_date, set_total, set_query):
         'end_date': set_end_date,
         'total': set_total
     }
-
-    return response
+    return [response]
 
 
 def total_emails_count(data):

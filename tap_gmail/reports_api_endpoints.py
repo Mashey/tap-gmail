@@ -4,12 +4,16 @@ from dotenv import load_dotenv
 import os
 import pprint
 import singer
+from singer import Transformer
 from datetime import date, datetime, timezone, timedelta
 from collections import defaultdict
 from tap_gmail import *
 
 
-with open('./tap_gmail/schemas/gmail_schema.json') as json_file:
+def get_abs_path(path):
+    return os.path.join(os.path.dirname(os.path.realpath(__file__)), path)
+
+with open(get_abs_path('schemas/gmail_schema.json')) as json_file:
     gmail_schema = json.load(json_file)
 
 # Start date is today -9 days
@@ -30,8 +34,11 @@ def find_weekly_active_users(selected_date=previous_week, page_token=None):
     total = total_unique_users(total_weekly_active_users)
     json_response = create_json_response(start_date, end_date, total, 'weekly active users')
 
-    # singer.write_schema('gmail', gmail_schema, 'timestamp')
-    # singer.write_records('gmail', json_response)
+    with Transformer() as transformer:
+        transformed_record = transformer.transform(json_response, 'gmail')
+
+    singer.write_schema('gmail', gmail_schema, 'timestamp')
+    singer.write_records('gmail', transformed_record)
 
     return json_response
 
@@ -44,8 +51,11 @@ def find_weekly_emails_sent(selected_date=previous_week, page_token=None):
     total = total_emails_count(total_weekly_active_users)
     json_response = create_json_response(start_date, end_date, total, 'weekly emails sent')
 
-    # singer.write_schema('gmail', gmail_schema, 'timestamp')
-    # singer.write_records('gmail', json_response)
+    with Transformer() as transformer:
+        transformed_record = transformer.transform(json_response, 'gmail')
+
+    singer.write_schema('gmail', gmail_schema, 'timestamp')
+    singer.write_records('gmail', transformed_record)
 
     return json_response
 
@@ -61,8 +71,11 @@ def find_weekly_emails_received(selected_date=previous_week, page_token=None):
     total = total_emails_count(total_weekly_emails_received)
     json_response = create_json_response(start_date, end_date, total, 'weekly emails received')
 
-    # singer.write_schema('gmail', gmail_schema, 'timestamp')
-    # singer.write_records('gmail', json_response)
+    with Transformer() as transformer:
+        transformed_record = transformer.transform(json_response, 'gmail')
+
+    singer.write_schema('gmail', gmail_schema, 'timestamp')
+    singer.write_records('gmail', transformed_record)
 
     return json_response
 
@@ -78,17 +91,21 @@ def find_daily_active_users(selected_date=latest_data, page_token=None):
                 {sender['entity']['userEmail']: sender['parameters'][0]['intValue']}
             )
     except KeyError:
-        return 'Only partial or no data available. Please try an earlier date.'
+        print('Only partial or no data available. Please try an earlier date.')
 
     if 'nextPageToken' in daily_active_senders:
         find_daily_active_users(
             selected_date, daily_active_senders['nextPageToken'])
+        return
 
-    total = len(total_daily_senders[selected_date])
+    total = len(total_daily_senders.get(selected_date, []))
     json_response = create_json_response(start_date, end_date, total, 'daily active users')
 
-    # singer.write_schema('gmail', gmail_schema, 'timestamp')
-    # singer.write_records('gmail', json_response)
+    with Transformer() as transformer:
+        transformed_record = transformer.transform(json_response, 'gmail')
+
+    singer.write_schema('gmail', gmail_schema, 'timestamp')
+    singer.write_records('gmail', transformed_record)
 
     return json_response
 
@@ -101,8 +118,11 @@ def find_daily_emails_sent(selected_date=latest_data, page_token=None):
     total = total_emails_count(total_daily_senders)
     json_response = create_json_response(start_date, end_date, total, 'daily emails sent')
 
-    # singer.write_schema('gmail', gmail_schema, 'timestamp')
-    # singer.write_records('gmail', json_response)
+    with Transformer() as transformer:
+        transformed_record = transformer.transform(json_response, 'gmail')
+
+    singer.write_schema('gmail', gmail_schema, 'timestamp')
+    singer.write_records('gmail', transformed_record)
 
     return json_response
 
@@ -118,17 +138,21 @@ def find_daily_emails_received(selected_date=latest_data, page_token=None):
                 {sender['entity']['userEmail']: sender['parameters'][0]['intValue']}
             )
     except KeyError:
-        return 'Only partial or no data available. Please try an earlier date.'
+        print('Only partial or no data available. Please try an earlier date.')
 
     if 'nextPageToken' in daily_emails_received:
         find_daily_emails_received(
             selected_date, daily_emails_received['nextPageToken'])
+        return
 
     total = total_emails_count(total_daily_emails_received)
     json_response = create_json_response(start_date, end_date, total, 'daily emails received')
 
-    # singer.write_schema('gmail', gmail_schema, 'timestamp')
-    # singer.write_records('gmail', json_response)
+    with Transformer() as transformer:
+        transformed_record = transformer.transform(json_response, 'gmail')
+
+    singer.write_schema('gmail', gmail_schema, 'timestamp')
+    singer.write_records('gmail', transformed_record)
 
     return json_response
 
