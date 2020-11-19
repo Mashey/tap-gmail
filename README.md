@@ -4,33 +4,74 @@ The first version of this application will retrieve Gmail data from a Google Wor
 
 The `Reports API` is part of the `Admin SDK`.
 
+## Setup
+
+The Google API Python Client documentation provides a guide for completing all necessary steps to ensure the application and environment are configured correclty. The guide can be found here:
+
+[Using OAuth 2.0 for Server to Server Applications](https://github.com/googleapis/google-api-python-client/blob/master/docs/oauth-server.md)
+
+The key steps in the guide are:
+
+- Creating a service account
+- Delegating domain-wide authority to the service account
+
 ## Endpoints :: Reports API :: Gmail
 
 |Gmail query param|
 
-### Daily Active Email Senders
+### Daily Active Users
 
-|Gmail query param|
+```python
+def find_daily_active_users(selected_date=latest_data, page_token=None)
+```
+
+- This function will return the number of daily active users for a given date.
+- The default date is always (today - 3) in order to account for the lag time of data availability.
 
 ### Daily Emails Sent
 
-|Gmail query param|
+```python
+def find_daily_emails_sent(selected_date=latest_data, page_token=None)
+```
+
+- This function will return the number of emails sent for a given date.
+- The default date is always (today - 3) in order to account for the lag time of data availability.
 
 ### Daily Emails Received
 
-|Gmail query param|
+```python
+def find_daily_emails_received(selected_date=latest_data, page_token=None)
+```
 
-### Weekly Active Mail Senders
+- This function will return the number of emails received for a given date.
+- The default date is always (today - 3) in order to account for the lag time of data availability.
 
-|Gmail query param|
+### Weekly Active Users
+
+```python
+def find_weekly_active_users(selected_date=previous_week, page_token=None)
+```
+
+- This function will return the number of active users for a given date range.
+- The default date range is always (today - 9) in order to account for the lag time of data availability.
 
 ### Weekly Emails Sent
 
-|Gmail query param|
+```python
+def find_weekly_emails_sent(selected_date=previous_week, page_token=None)
+```
+
+- This function will return the number of emails sent for a given date range.
+- The default date range is always (today - 9) in order to account for the lag time of data availability.
 
 ### Weekly Emails Received
 
-|Gmail query param|
+```python
+def find_weekly_emails_received(selected_date=previous_week, page_token=None)
+```
+
+- This function will return the number of emails received for a given date range.
+- The default date range is always (today - 9) in order to account for the lag time of data availability.
 
 ## Helpful Documentation
 
