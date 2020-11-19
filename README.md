@@ -28,6 +28,34 @@ def find_daily_active_users(selected_date=latest_data, page_token=None)
 - This function will return the number of daily active users for a given date.
 - The default date is always (today - 3) in order to account for the lag time of data availability.
 
+```json
+// gmail_schema.json
+
+{
+  "type": ["object", "null"],
+  "additionalProperties": false,
+  "properties": {
+    "timestamp": { "type": ["null", "string"] },
+    "query_type": { "type": ["null", "string"] },
+    "start_date": { "type": ["null", "string"] },
+    "end_date": { "type": ["null", "string"] },
+    "total": { "type": ["null", "integer"] }
+  }
+}
+```
+
+Example Response:
+
+```json
+{
+  "timestamp": "2020-11-19T23:02:09.236462+00:00",
+  "query_type": "daily active users",
+  "start_date": "2020-11-19",
+  "end_date": "2020-11-19",
+  "total": 50
+}
+```
+
 ### Daily Emails Sent
 
 ```python
@@ -36,6 +64,34 @@ def find_daily_emails_sent(selected_date=latest_data, page_token=None)
 
 - This function will return the number of emails sent for a given date.
 - The default date is always (today - 3) in order to account for the lag time of data availability.
+
+```json
+// gmail_schema.json
+
+{
+  "type": ["object", "null"],
+  "additionalProperties": false,
+  "properties": {
+    "timestamp": { "type": ["null", "string"] },
+    "query_type": { "type": ["null", "string"] },
+    "start_date": { "type": ["null", "string"] },
+    "end_date": { "type": ["null", "string"] },
+    "total": { "type": ["null", "integer"] }
+  }
+}
+```
+
+Example Response:
+
+```json
+{
+  "timestamp": "2020-11-19T23:02:09.236462+00:00",
+  "query_type": "daily emails sent",
+  "start_date": "2020-11-19",
+  "end_date": "2020-11-19",
+  "total": 50
+}
+```
 
 ### Daily Emails Received
 
@@ -46,6 +102,34 @@ def find_daily_emails_received(selected_date=latest_data, page_token=None)
 - This function will return the number of emails received for a given date.
 - The default date is always (today - 3) in order to account for the lag time of data availability.
 
+```json
+// gmail_schema.json
+
+{
+  "type": ["object", "null"],
+  "additionalProperties": false,
+  "properties": {
+    "timestamp": { "type": ["null", "string"] },
+    "query_type": { "type": ["null", "string"] },
+    "start_date": { "type": ["null", "string"] },
+    "end_date": { "type": ["null", "string"] },
+    "total": { "type": ["null", "integer"] }
+  }
+}
+```
+
+Example Response:
+
+```json
+{
+  "timestamp": "2020-11-19T23:02:09.236462+00:00",
+  "query_type": "daily emails received",
+  "start_date": "2020-11-19",
+  "end_date": "2020-11-19",
+  "total": 50
+}
+```
+
 ### Weekly Active Users
 
 ```python
@@ -54,6 +138,34 @@ def find_weekly_active_users(selected_date=previous_week, page_token=None)
 
 - This function will return the number of active users for a given date range.
 - The default date range is always (today - 9) in order to account for the lag time of data availability.
+
+```json
+// gmail_schema.json
+
+{
+  "type": ["object", "null"],
+  "additionalProperties": false,
+  "properties": {
+    "timestamp": { "type": ["null", "string"] },
+    "query_type": { "type": ["null", "string"] },
+    "start_date": { "type": ["null", "string"] },
+    "end_date": { "type": ["null", "string"] },
+    "total": { "type": ["null", "integer"] }
+  }
+}
+```
+
+Example Response:
+
+```json
+{
+  "timestamp": "2020-11-19T23:02:09.236462+00:00",
+  "query_type": "weekly active users",
+  "start_date": "2020-11-09",
+  "end_date": "2020-11-15",
+  "total": 50
+}
+```
 
 ### Weekly Emails Sent
 
@@ -64,6 +176,34 @@ def find_weekly_emails_sent(selected_date=previous_week, page_token=None)
 - This function will return the number of emails sent for a given date range.
 - The default date range is always (today - 9) in order to account for the lag time of data availability.
 
+```json
+// gmail_schema.json
+
+{
+  "type": ["object", "null"],
+  "additionalProperties": false,
+  "properties": {
+    "timestamp": { "type": ["null", "string"] },
+    "query_type": { "type": ["null", "string"] },
+    "start_date": { "type": ["null", "string"] },
+    "end_date": { "type": ["null", "string"] },
+    "total": { "type": ["null", "integer"] }
+  }
+}
+```
+
+Example Response:
+
+```json
+{
+  "timestamp": "2020-11-19T23:02:09.236462+00:00",
+  "query_type": "weekly emails sent",
+  "start_date": "2020-11-09",
+  "end_date": "2020-11-15",
+  "total": 50
+}
+```
+
 ### Weekly Emails Received
 
 ```python
@@ -72,6 +212,34 @@ def find_weekly_emails_received(selected_date=previous_week, page_token=None)
 
 - This function will return the number of emails received for a given date range.
 - The default date range is always (today - 9) in order to account for the lag time of data availability.
+
+```json
+// gmail_schema.json
+
+{
+  "type": ["object", "null"],
+  "additionalProperties": false,
+  "properties": {
+    "timestamp": { "type": ["null", "string"] },
+    "query_type": { "type": ["null", "string"] },
+    "start_date": { "type": ["null", "string"] },
+    "end_date": { "type": ["null", "string"] },
+    "total": { "type": ["null", "integer"] }
+  }
+}
+```
+
+Example Response:
+
+```json
+{
+  "timestamp": "2020-11-19T23:02:09.236462+00:00",
+  "query_type": "weekly emails received",
+  "start_date": "2020-11-09",
+  "end_date": "2020-11-15",
+  "total": 50
+}
+```
 
 ## Helpful Documentation
 
