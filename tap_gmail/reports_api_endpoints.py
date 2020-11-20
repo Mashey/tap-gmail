@@ -13,6 +13,7 @@ from tap_gmail import *
 def get_abs_path(path):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), path)
 
+
 with open(get_abs_path('schemas/gmail_schema.json')) as json_file:
     gmail_schema = json.load(json_file)
 

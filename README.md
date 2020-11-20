@@ -188,7 +188,11 @@ Links to helpful documentation for this project
 
 [Admin SDK](https://developers.google.com/admin-sdk)
 
+[Admin SDK :: Instance Methods](https://googleapis.github.io/google-api-python-client/docs/dyn/admin_reports_v1.html)
+
 [GCP Authentication](https://cloud.google.com/docs/authentication)
+
+[google-auth Python Library](https://google-auth.readthedocs.io/en/latest/user-guide.html)
 
 [Google Python API Client](https://github.com/googleapis/google-api-python-client)
 
