@@ -3,6 +3,9 @@ name = "tap_gmail"
 version = "0.1.0"
 description = ""
 authors = ["Jordan <jordan.wallace.williams@gmail.com>"]
+packages = [
+    { include = "tap_gmail" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
