@@ -30,7 +30,7 @@ pylint = "^2.6.0"
 autopep8 = "^1.5.4"
 
 [tool.poetry.scripts]
-tap-gamil = 'tap_gmail:main'
+tap-gmail = 'tap_gmail:main'
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]
