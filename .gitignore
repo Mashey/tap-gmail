@@ -9,3 +9,4 @@ config_tap_gitlab.json
 tap_gmail.egg-info
 google_admin_reports.json
 service_key.json
+secrets_service.json
