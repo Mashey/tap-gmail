@@ -40,5 +40,3 @@ def create_service():
 
 
 service = create_service()
-
-test = 'things'
