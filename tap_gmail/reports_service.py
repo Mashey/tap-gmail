@@ -22,6 +22,7 @@ def access_secret_version(project_id, secret_id, version_id):
 
 # SERVICE_ACCOUNT_FILE = access_secret_version('102430623331', 'service_key', 1)
 SERVICE_ACCOUNT_FILE = os.getenv("ADMIN_SDK_KEY")
+SERVICE_ACCOUNT_FILE_JSON = json.loads(SERVICE_ACCOUNT_FILE)
 
 SCOPES = [
     'https://www.googleapis.com/auth/admin.reports.usage.readonly',
@@ -29,7 +30,7 @@ SCOPES = [
 ]
 
 credentials = service_account.Credentials.from_service_account_info(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES, subject="jordan@mashey.com")
+    SERVICE_ACCOUNT_FILE_JSON, scopes=SCOPES, subject="jordan@mashey.com")
 
 
 def create_service():
