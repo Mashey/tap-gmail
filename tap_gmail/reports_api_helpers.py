@@ -52,7 +52,7 @@ def get_emails(selected_date, page_token, sent_or_received):
         date=selected_date,
         parameters=request_type,
         filters=f'{request_type}>0',
-        maxResults=10,
+        maxResults=100,
         pageToken=page_token
     ).execute()
 
@@ -128,3 +128,4 @@ def total_emails_count(data):
             total_emails += emails_int
 
     return total_emails
+
