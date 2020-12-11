@@ -22,7 +22,7 @@ def find_previous_week():
 
 
 def find_latest_data():
-    two_days_ago = date.today() - timedelta(days=3)
+    two_days_ago = date.today() - timedelta(days=4)
     return two_days_ago.isoformat()
 
 
