@@ -3,6 +3,7 @@ from googleapiclient.discovery import build
 from google.auth.transport.requests import AuthorizedSession
 from google.cloud import secretmanager
 import json
+import os
 
 
 def access_secret_version(project_id, secret_id, version_id):
@@ -19,7 +20,8 @@ def access_secret_version(project_id, secret_id, version_id):
     return data
 
 
-SERVICE_ACCOUNT_FILE = access_secret_version('102430623331', 'service_key', 1)
+# SERVICE_ACCOUNT_FILE = access_secret_version('102430623331', 'service_key', 1)
+SERVICE_ACCOUNT_FILE = os.getenv("ADMIN_SDK_KEY")
 
 SCOPES = [
     'https://www.googleapis.com/auth/admin.reports.usage.readonly',
