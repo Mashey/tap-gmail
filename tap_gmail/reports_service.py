@@ -12,8 +12,10 @@ SCOPES = [
     'https://www.googleapis.com/auth/admin.reports.audit.readonly'
 ]
 
+USER_ACCOUNT = "jordan@mashey.com"
+
 credentials = service_account.Credentials.from_service_account_info(
-    SERVICE_ACCOUNT_FILE_JSON, scopes=SCOPES, subject="jordan@mashey.com")
+    SERVICE_ACCOUNT_FILE_JSON, scopes=SCOPES, subject=USER_ACCOUNT)
 
 
 def create_service():
