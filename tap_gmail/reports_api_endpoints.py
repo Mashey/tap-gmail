@@ -20,7 +20,7 @@ with open(get_abs_path('schemas/gmail_schema.json')) as json_file:
 # Start date is today -9 days
 previous_week = find_previous_week()
 
-# Start date is today -3 days
+# Start date is today -4 days
 latest_data = find_latest_data()
 
 
