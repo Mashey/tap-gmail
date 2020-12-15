@@ -23,7 +23,7 @@ The aggregated data follows a simple JSON schema that contains the following pro
 
 This application utilizes the [Reports API](https://developers.google.com/admin-sdk/reports/v1/get-start/getting-started) which is part of the [Admin SDK](https://developers.google.com/admin-sdk).
 
-## Setup
+## Admin SDK Setup
 
 The Google API Python Client documentation provides a guide for completing all necessary steps to ensure the application and environment are configured correclty. The guide can be found here:
 
@@ -31,8 +31,21 @@ The Google API Python Client documentation provides a guide for completing all n
 
 The key steps in the guide are:
 
-- Creating a service account
-- Delegating domain-wide authority to the service account
+- Create a service account
+- Delegate domain-wide authority to the service account
+- Create and download a `json` [service account key](https://cloud.google.com/iam/docs/creating-managing-service-account-keys#creating_service_account_keys) from the newly-created service account
+
+## Update `reports_service.py` Variables
+
+```python
+# "ADMIN_SDK_KEY" should be updated if your Kubernetes secret name is different
+
+SERVICE_ACCOUNT_FILE = os.getenv("ADMIN_SDK_KEY")
+
+# Update to a Google user authorized to run reports in Google Workplace
+
+USER_ACCOUNT = "jordan@mashey.com"
+```
 
 ## Endpoints :: Reports API :: Gmail
 
